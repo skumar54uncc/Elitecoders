@@ -13,10 +13,15 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllBlogPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    const posts = getAllBlogPosts();
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error("Error generating static params for blog posts:", error);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

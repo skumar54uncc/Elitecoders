@@ -3,7 +3,13 @@ import { getAllBlogPosts } from "@/lib/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.elitesurgicalcoders.com";
-  const blogPosts = getAllBlogPosts();
+  
+  let blogPosts: ReturnType<typeof getAllBlogPosts> = [];
+  try {
+    blogPosts = getAllBlogPosts();
+  } catch (error) {
+    console.error("Error getting blog posts for sitemap:", error);
+  }
 
   const blogUrls = blogPosts.map((post) => ({
     url: `${baseUrl}/resources/${post.slug}`,

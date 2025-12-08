@@ -78,17 +78,24 @@ export async function POST(request: NextRequest) {
 
     const data = validationResult.data;
 
-    // Store in database
-    const lead = await prisma.lead.create({
-      data: {
-        name: data.name,
-        email: data.email,
-        organization: data.organization,
-        role: data.role,
-        servicesNeeded: JSON.stringify(data.servicesNeeded),
-        message: data.message,
-      },
-    });
+    // Store in database (with error handling)
+    let lead;
+    try {
+      lead = await prisma.lead.create({
+        data: {
+          name: data.name,
+          email: data.email,
+          organization: data.organization,
+          role: data.role,
+          servicesNeeded: JSON.stringify(data.servicesNeeded),
+          message: data.message,
+        },
+      });
+    } catch (dbError) {
+      console.error("Database error:", dbError);
+      // Continue with email sending even if database fails
+      // This ensures form submissions aren't lost
+    }
 
     // Prepare email content
     const internalNotificationEmail = process.env.INTERNAL_NOTIFICATION_EMAIL || "notifications@elitesurgicalcoders.com";
@@ -136,7 +143,10 @@ export async function POST(request: NextRequest) {
     await Promise.allSettled(emailPromises);
 
     return NextResponse.json(
-      { message: "Form submitted successfully", id: lead.id },
+      { 
+        message: "Form submitted successfully", 
+        id: lead?.id || "email-only" 
+      },
       { status: 200 }
     );
   } catch (error) {
