@@ -86,15 +86,22 @@ function AnimatedStat({ stat, index }: { stat: Stat; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
+  // Always call hooks unconditionally at the top level
+  // Use appropriate values based on stat type, but always call the hooks
+  const rangeStartValue = stat.isRange && stat.rangeStart !== undefined ? stat.rangeStart : 0;
+  const rangeEndValue = stat.isRange && stat.rangeEnd !== undefined ? stat.rangeEnd : 0;
+  const numericValue = stat.numericValue !== undefined ? stat.numericValue : 0;
+  
+  const startCount = useCountUp(rangeStartValue, 1500, 0, isInView && stat.isRange === true);
+  const endCount = useCountUp(rangeEndValue, 2000, 0, isInView && stat.isRange === true);
+  const numericCount = useCountUp(numericValue, 2000, 0, isInView && stat.numericValue !== undefined);
+
   let displayValue: string;
 
   if (stat.isRange && stat.rangeStart !== undefined && stat.rangeEnd !== undefined) {
-    const startCount = useCountUp(stat.rangeStart, 1500, 0, isInView);
-    const endCount = useCountUp(stat.rangeEnd, 2000, 0, isInView);
     displayValue = `${startCount}–${endCount}`;
   } else if (stat.numericValue !== undefined) {
-    const count = useCountUp(stat.numericValue, 2000, 0, isInView);
-    displayValue = `${count}${stat.suffix || ""}`;
+    displayValue = `${numericCount}${stat.suffix || ""}`;
   } else {
     displayValue = stat.value;
   }
