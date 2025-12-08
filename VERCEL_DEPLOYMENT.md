@@ -15,17 +15,14 @@ Based on your Vercel setup, here's what needs to be adjusted:
 ✅ **Correct:** `./`
 
 ### 4. Build Command
-✅ **Correct:** `npm run build` or `next build`
+✅ **Correct:** `npm run build`
 
-**However, you need to add Prisma generation!** Update to:
-```
-npm run db:generate && npm run build
-```
-
-Or create a custom build script in `package.json`:
+**Note:** The `build` script in `package.json` already includes Prisma generation:
 ```json
 "build": "prisma generate && next build"
 ```
+
+So you only need: `npm run build` (NOT `npm run db:generate && npm run build`)
 
 ### 5. Output Directory
 ✅ **Correct:** `Next.js default` (or leave empty)
@@ -40,8 +37,18 @@ Or create a custom build script in `package.json`:
 **Add these required environment variables:**
 
 #### Required Variables:
+
+**⚠️ CRITICAL: Add DATABASE_URL immediately (even for testing)**
+
+For immediate build fix (testing):
+```
+DATABASE_URL=file:./dev.db
+```
+
+For production (REQUIRED - SQLite won't work on Vercel):
 ```
 DATABASE_URL=your-postgres-database-url
+```
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
@@ -65,9 +72,18 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
 ```
 
-## ⚠️ Important: Database Setup
+## ⚠️ CRITICAL: Database Setup
 
-**SQLite won't work on Vercel!** You need to switch to Postgres:
+### Immediate Fix (To Get Build Working)
+
+**Add `DATABASE_URL` environment variable in Vercel:**
+1. Go to **Settings** → **Environment Variables**
+2. Add: `DATABASE_URL` = `file:./dev.db` (temporary, for build only)
+3. This will allow Prisma to generate the client during build
+
+### Production Requirement (MUST DO)
+
+**SQLite won't work on Vercel!** You MUST switch to Postgres for production:
 
 ### Option 1: Vercel Postgres (Recommended)
 1. In Vercel dashboard, go to your project
@@ -97,13 +113,13 @@ npx prisma migrate dev --name init
 
 ## 📋 Vercel Configuration Checklist
 
-- [ ] Change project name to `Elite-Surgical-Coders`
-- [ ] Update build command to include Prisma: `npm run db:generate && npm run build`
-- [ ] Remove `EXAMPLE_NAME` environment variable
+- [ ] **IMMEDIATE:** Add `DATABASE_URL=file:./dev.db` in Vercel environment variables (for build)
+- [ ] Verify build command is: `npm run build` (already correct in package.json)
+- [ ] Remove `EXAMPLE_NAME` environment variable (if exists)
 - [ ] Add all required environment variables (see above)
-- [ ] Set up Postgres database (not SQLite)
-- [ ] Update Prisma schema to use Postgres
-- [ ] Run Prisma migrations
+- [ ] **PRODUCTION:** Set up Postgres database (SQLite won't work on Vercel)
+- [ ] **PRODUCTION:** Update Prisma schema to use `postgresql`
+- [ ] **PRODUCTION:** Run Prisma migrations
 - [ ] Test the deployment
 
 ## 🚀 Deployment Steps
