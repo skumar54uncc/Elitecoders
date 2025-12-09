@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
-import { getAllBlogPosts } from "@/lib/blog";
+import { getAllBlogPosts } from "@/lib/blog-db";
 
 export const metadata: Metadata = {
   title: "Resources & Blog | Surgical Coding & Billing Articles",
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ResourcesPage() {
-  const blogPosts = getAllBlogPosts();
+export default async function ResourcesPage() {
+  const blogPosts = await getAllBlogPosts();
 
   return (
     <div className="bg-white">

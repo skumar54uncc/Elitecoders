@@ -19,21 +19,21 @@ const stats: Stat[] = [
   {
     value: "700+",
     label: "operative reports coded per month",
-    icon: <FileText className="h-8 w-8" />,
+    icon: <FileText className="h-10 w-10" />,
     numericValue: 700,
     suffix: "+",
   },
   {
     value: "1100+",
     label: "office visits coded per month",
-    icon: <FileText className="h-8 w-8" />,
+    icon: <FileText className="h-10 w-10" />,
     numericValue: 1100,
     suffix: "+",
   },
   {
     value: "40–100",
     label: "affidavits prepared per month",
-    icon: <Briefcase className="h-8 w-8" />,
+    icon: <Briefcase className="h-10 w-10" />,
     isRange: true,
     rangeStart: 40,
     rangeEnd: 100,
@@ -41,15 +41,8 @@ const stats: Stat[] = [
   {
     value: "12",
     label: "active clients supported",
-    icon: <Users className="h-8 w-8" />,
+    icon: <Users className="h-10 w-10" />,
     numericValue: 12,
-  },
-  {
-    value: "20+",
-    label: "years of combined coding experience",
-    icon: <Award className="h-8 w-8" />,
-    numericValue: 20,
-    suffix: "+",
   },
 ];
 
@@ -116,8 +109,8 @@ function AnimatedStat({ stat, index }: { stat: Stat; index: number }) {
       className="flex flex-col items-center rounded-lg border border-gray-200 bg-gray-50 p-6 text-center"
     >
       <div className="mb-4 text-accent">{stat.icon}</div>
-      <div className="text-3xl font-bold text-primary">{displayValue}</div>
-      <div className="mt-2 text-sm text-gray-600">{stat.label}</div>
+      <div className="text-4xl font-bold text-primary">{displayValue}</div>
+      <div className="mt-2 text-base text-gray-600">{stat.label}</div>
     </motion.div>
   );
 }
@@ -134,7 +127,7 @@ export default function StatsSection() {
             Trusted by New York hospitals and specialty practices
           </p>
         </div>
-        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <AnimatedStat key={index} stat={stat} index={index} />
           ))}

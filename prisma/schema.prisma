@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"  // Changed from "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -19,5 +19,71 @@ model Lead {
   role            String
   servicesNeeded  String   // JSON string array
   message         String
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  password      String   // Hashed password
+  name          String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?
+  content     String   // For SQLite, use String. For Postgres, can use @db.Text
+  image       String?  // Path to thumbnail image
+  category    String   @default("Blog")
+  author      String   @default("Elite Surgical Coders")
+  tags        String   @default("[]") // Store as JSON string for SQLite compatibility
+  date        DateTime @default(now())
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?
+  updatedBy   String?
+}
+
+model CareerPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String?
+  content     String   // Job description and requirements
+  location    String?  // Job location (e.g., "Remote", "New York, NY")
+  employmentType String @default("Full-time") // Full-time, Part-time, Contract, etc.
+  department  String?  // Department or team
+  date        DateTime @default(now())
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?
+  updatedBy   String?
+  applications JobApplication[]
+}
+
+model JobApplication {
+  id            String      @id @default(cuid())
+  careerPostId  String?     // Optional: link to specific position
+  careerPost    CareerPost? @relation(fields: [careerPostId], references: [id])
+  positionTitle String      // Position title (can be from CareerPost or custom)
+  firstName     String
+  lastName      String
+  email         String
+  phone         String
+  resume        String      // Path to uploaded resume file
+  coverLetter   String?     // Cover letter or additional message
+  experience    String?     // Years of experience or experience summary
+  certifications String?   // Certifications (e.g., CPC, CCS, etc.)
+  status        String      @default("pending") // pending, accepted, rejected
+  notes         String?     // Admin notes
+  reviewedBy    String?     // User ID who reviewed
+  reviewedAt    DateTime?   // When it was reviewed
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 

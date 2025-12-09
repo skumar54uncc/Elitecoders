@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import { escapeHtml, escapeHtmlWithBreaks } from "@/lib/utils";
 
 // Validation schema
 const contactSchema = z.object({
@@ -100,23 +101,24 @@ export async function POST(request: NextRequest) {
     // Prepare email content
     const internalNotificationEmail = process.env.INTERNAL_NOTIFICATION_EMAIL || "notifications@elitesurgicalcoders.com";
 
+    // Escape all user input to prevent XSS in emails
     const internalEmailHtml = `
       <h2>New Contact Form Submission</h2>
-      <p><strong>Name:</strong> ${data.name}</p>
-      <p><strong>Email:</strong> ${data.email}</p>
-      <p><strong>Organization:</strong> ${data.organization}</p>
-      <p><strong>Role:</strong> ${data.role}</p>
+      <p><strong>Name:</strong> ${escapeHtml(data.name)}</p>
+      <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+      <p><strong>Organization:</strong> ${escapeHtml(data.organization)}</p>
+      <p><strong>Role:</strong> ${escapeHtml(data.role)}</p>
       <p><strong>Services Needed:</strong></p>
       <ul>
-        ${data.servicesNeeded.map((service) => `<li>${service}</li>`).join("")}
+        ${data.servicesNeeded.map((service) => `<li>${escapeHtml(service)}</li>`).join("")}
       </ul>
       <p><strong>Message:</strong></p>
-      <p>${data.message.replace(/\n/g, "<br>")}</p>
+      <p>${escapeHtmlWithBreaks(data.message)}</p>
       <p><strong>Submitted:</strong> ${new Date().toLocaleString()}</p>
     `;
 
     const autoReplyHtml = `
-      <p>Dear ${data.name},</p>
+      <p>Dear ${escapeHtml(data.name)},</p>
       <p>Thank you for reaching out to Elite Surgical Coders and Medical Billing LLC. We've received your message and will get back to you within 1 business day.</p>
       <p><strong>Important:</strong> Please do not share patient-identifying information (PHI) by email. Once we connect, we'll provide secure methods for exchanging PHI as needed.</p>
       <p>Best regards,<br>Elite Surgical Coders Team</p>
@@ -126,7 +128,7 @@ export async function POST(request: NextRequest) {
     const emailPromises = [
       sendEmail({
         to: internalNotificationEmail,
-        subject: `New Contact Form: ${data.name} from ${data.organization}`,
+        subject: `New Contact Form: ${escapeHtml(data.name)} from ${escapeHtml(data.organization)}`,
         html: internalEmailHtml,
       }).catch((error) => {
         console.error("Failed to send internal notification:", error);

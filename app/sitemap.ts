@@ -1,14 +1,22 @@
 import { MetadataRoute } from "next";
-import { getAllBlogPosts } from "@/lib/blog";
+import { getAllBlogPosts } from "@/lib/blog-db";
+import { getAllCareerPosts } from "@/lib/career-db";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.elitesurgicalcoders.com";
   
-  let blogPosts: ReturnType<typeof getAllBlogPosts> = [];
+  let blogPosts: Awaited<ReturnType<typeof getAllBlogPosts>> = [];
   try {
-    blogPosts = getAllBlogPosts();
+    blogPosts = await getAllBlogPosts();
   } catch (error) {
     console.error("Error getting blog posts for sitemap:", error);
+  }
+
+  let careerPosts: Awaited<ReturnType<typeof getAllCareerPosts>> = [];
+  try {
+    careerPosts = await getAllCareerPosts();
+  } catch (error) {
+    console.error("Error getting career posts for sitemap:", error);
   }
 
   const blogUrls = blogPosts.map((post) => ({
@@ -16,6 +24,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,
     priority: 0.7,
+  }));
+
+  const careerUrls = careerPosts.map((post) => ({
+    url: `${baseUrl}/careers/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
   }));
 
   return [
@@ -64,10 +79,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/careers`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
     ...blogUrls,
+    ...careerUrls,
   ];
 }
 
