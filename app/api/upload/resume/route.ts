@@ -2,8 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { existsSync } from "fs";
+import { requireAuth } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
+  try {
+    // Require authentication for resume uploads
+    await requireAuth();
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File;
@@ -16,7 +27,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate file type (PDF, DOC, DOCX)
-    const allowedTypes = [
+    const allowedMimeTypes = [
       "application/pdf",
       "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -24,9 +35,18 @@ export async function POST(request: NextRequest) {
     const allowedExtensions = ["pdf", "doc", "docx"];
     const fileExtension = file.name.split(".").pop()?.toLowerCase();
 
+    // Validate both MIME type and extension
     if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
       return NextResponse.json(
         { message: "Invalid file type. Only PDF, DOC, and DOCX files are allowed." },
+        { status: 400 }
+      );
+    }
+
+    // Validate MIME type matches extension
+    if (!allowedMimeTypes.includes(file.type)) {
+      return NextResponse.json(
+        { message: "Invalid file type. File MIME type does not match expected format." },
         { status: 400 }
       );
     }
@@ -40,10 +60,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique filename
+    // Generate unique filename (sanitize extension)
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
-    const filename = `${timestamp}-${randomString}.${fileExtension}`;
+    // Sanitize extension - only allow alphanumeric characters
+    const sanitizedExtension = fileExtension.replace(/[^a-z0-9]/g, "");
+    if (!sanitizedExtension || !allowedExtensions.includes(sanitizedExtension)) {
+      return NextResponse.json(
+        { message: "Invalid file extension" },
+        { status: 400 }
+      );
+    }
+    const filename = `${timestamp}-${randomString}.${sanitizedExtension}`;
 
     // Save file to public/uploads/resumes directory
     const uploadDir = join(process.cwd(), "public", "uploads", "resumes");
@@ -70,7 +98,13 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return NextResponse.json(
+        { message: "Unauthorized" },
+        { status: 401 }
+      );
+    }
     console.error("Error uploading resume:", error);
     return NextResponse.json(
       { message: "An error occurred uploading the resume" },

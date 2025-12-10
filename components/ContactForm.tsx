@@ -87,6 +87,17 @@ export default function ContactForm() {
         throw new Error(error.message || "Failed to submit form");
       }
 
+      const result = await response.json();
+      
+      // Check if emails were sent successfully
+      if (result.emailSent === false && result.emailErrors) {
+        console.error("Email sending errors:", result.emailErrors);
+        // Still show success for form submission, but log email errors
+        setErrorMessage(
+          "Form submitted successfully, but there was an issue sending confirmation emails. Please check server logs."
+        );
+      }
+
       setSubmitStatus("success");
       setFormData({
         name: "",

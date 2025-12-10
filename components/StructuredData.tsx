@@ -1,14 +1,30 @@
 // Structured Data for SEO (JSON-LD)
 
+interface BlogData {
+  title: string;
+  excerpt?: string;
+  image?: string;
+  date: string;
+  author?: string;
+}
+
 interface StructuredDataProps {
   type: "organization" | "website" | "service" | "blog";
-  data?: any;
+  data?: BlogData;
 }
+
+type StructuredDataType = 
+  | {
+      "@context": string;
+      "@type": "Organization" | "WebSite" | "Service" | "BlogPosting";
+      [key: string]: unknown;
+    }
+  | Record<string, never>;
 
 export default function StructuredData({ type, data }: StructuredDataProps) {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.elitesurgicalcoders.com";
 
-  let structuredData: any = {};
+  let structuredData: StructuredDataType = {};
 
   switch (type) {
     case "organization":

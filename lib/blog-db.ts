@@ -31,7 +31,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       orderBy: { date: "desc" },
     });
 
-    return posts.map((post: any) => {
+    return posts.map((post) => {
       // Parse tags from JSON string (for SQLite compatibility)
       let tags: string[] = [];
       try {

@@ -26,8 +26,8 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.json({ applications }, { status: 200 });
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error fetching applications:", error);

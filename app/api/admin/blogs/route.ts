@@ -45,8 +45,8 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.json({ posts }, { status: 200 });
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error fetching blog posts:", error);
@@ -101,8 +101,8 @@ export async function POST(request: NextRequest) {
       { message: "Blog post created successfully", post },
       { status: 201 }
     );
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error creating blog post:", error);

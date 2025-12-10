@@ -110,18 +110,18 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error submitting application:", error);
     
     // Return more detailed error in development
-    const errorMessage = process.env.NODE_ENV === "development" 
+    const errorMessage = process.env.NODE_ENV === "development" && error instanceof Error
       ? error.message || "An error occurred submitting your application"
       : "An error occurred submitting your application";
     
     return NextResponse.json(
       { 
         message: errorMessage,
-        error: process.env.NODE_ENV === "development" ? error.stack : undefined
+        error: process.env.NODE_ENV === "development" && error instanceof Error ? error.stack : undefined
       },
       { status: 500 }
     );

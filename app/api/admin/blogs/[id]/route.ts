@@ -35,8 +35,8 @@ export async function GET(
     }
 
     return NextResponse.json({ post }, { status: 200 });
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error fetching blog post:", error);
@@ -93,9 +93,32 @@ export async function PUT(
     }
 
     // Convert tags array to JSON string for SQLite compatibility
-    const updateData: any = { ...data };
-    if (updateData.tags && Array.isArray(updateData.tags)) {
-      updateData.tags = JSON.stringify(updateData.tags);
+    const updateData: Partial<{
+      title: string;
+      slug: string;
+      excerpt: string | null;
+      content: string;
+      image: string | null;
+      category: string;
+      author: string;
+      tags: string;
+      published: boolean;
+      updatedBy: string;
+    }> = {};
+    
+    // Copy all fields except tags
+    if (data.title !== undefined) updateData.title = data.title;
+    if (data.slug !== undefined) updateData.slug = data.slug;
+    if (data.excerpt !== undefined) updateData.excerpt = data.excerpt;
+    if (data.content !== undefined) updateData.content = data.content;
+    if (data.image !== undefined) updateData.image = data.image;
+    if (data.category !== undefined) updateData.category = data.category;
+    if (data.author !== undefined) updateData.author = data.author;
+    if (data.published !== undefined) updateData.published = data.published;
+    
+    // Handle tags separately
+    if (data.tags !== undefined) {
+      updateData.tags = Array.isArray(data.tags) ? JSON.stringify(data.tags) : data.tags;
     }
 
     const post = await prisma.blogPost.update({
@@ -110,8 +133,8 @@ export async function PUT(
       { message: "Blog post updated successfully", post },
       { status: 200 }
     );
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error updating blog post:", error);
@@ -149,8 +172,8 @@ export async function DELETE(
       { message: "Blog post deleted successfully" },
       { status: 200 }
     );
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error deleting blog post:", error);

@@ -43,8 +43,8 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.json({ posts }, { status: 200 });
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error fetching career posts:", error);
@@ -105,8 +105,8 @@ export async function POST(request: NextRequest) {
       { message: "Career post created successfully", post },
       { status: 201 }
     );
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error creating career post:", error);
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         message: "An error occurred creating the career post",
-        error: process.env.NODE_ENV === "development" ? error.message : undefined
+        error: process.env.NODE_ENV === "development" && error instanceof Error ? error.message : undefined
       },
       { status: 500 }
     );

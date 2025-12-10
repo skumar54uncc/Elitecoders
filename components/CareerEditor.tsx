@@ -88,8 +88,8 @@ export default function CareerEditor({ post }: CareerEditorProps) {
       setTimeout(() => {
         router.push("/admin?tab=careers");
       }, 1500);
-    } catch (error: any) {
-      setError(error.message || "An error occurred");
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }

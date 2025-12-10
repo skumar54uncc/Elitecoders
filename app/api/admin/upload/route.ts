@@ -36,11 +36,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique filename
+    // Generate unique filename (sanitize extension)
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
-    const extension = file.name.split(".").pop();
-    const filename = `${timestamp}-${randomString}.${extension}`;
+    const originalExtension = file.name.split(".").pop()?.toLowerCase() || "";
+    // Sanitize extension - only allow alphanumeric characters
+    const sanitizedExtension = originalExtension.replace(/[^a-z0-9]/g, "");
+    if (!sanitizedExtension) {
+      return NextResponse.json(
+        { message: "Invalid file extension" },
+        { status: 400 }
+      );
+    }
+    const filename = `${timestamp}-${randomString}.${sanitizedExtension}`;
 
     // Save file to public/images/blog directory
     const uploadDir = join(process.cwd(), "public", "images", "blog");
@@ -67,8 +75,8 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error uploading file:", error);

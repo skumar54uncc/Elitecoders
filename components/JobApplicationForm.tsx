@@ -59,8 +59,8 @@ export default function JobApplicationForm({ positionTitle, careerPostId }: JobA
 
       setResumeUrl(data.url);
       setFormData((prev) => ({ ...prev, resume: data.url }));
-    } catch (error: any) {
-      setError(error.message || "Failed to upload resume");
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "Failed to upload resume");
     } finally {
       setUploading(false);
     }
@@ -152,8 +152,8 @@ export default function JobApplicationForm({ positionTitle, careerPostId }: JobA
         certifications: "",
       });
       setResumeUrl("");
-    } catch (error: any) {
-      setError(error.message || "An error occurred");
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }

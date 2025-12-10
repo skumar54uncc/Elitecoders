@@ -86,8 +86,8 @@ export default function BlogEditor({ post }: BlogEditorProps) {
       setFormData((prev) => ({ ...prev, image: data.url }));
       setSuccess("Image uploaded successfully!");
       setTimeout(() => setSuccess(""), 3000);
-    } catch (error: any) {
-      setError(error.message || "Failed to upload image");
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "Failed to upload image");
     } finally {
       setUploading(false);
     }
@@ -138,8 +138,8 @@ export default function BlogEditor({ post }: BlogEditorProps) {
       setTimeout(() => {
         router.push("/admin");
       }, 1500);
-    } catch (error: any) {
-      setError(error.message || "An error occurred");
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }

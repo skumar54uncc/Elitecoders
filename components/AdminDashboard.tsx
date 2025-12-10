@@ -67,15 +67,16 @@ export default function AdminDashboard() {
       }
       const data = await response.json();
       // Parse tags from JSON string if needed
-      const postsWithParsedTags = data.posts.map((post: any) => {
-        if (typeof post.tags === 'string') {
+      const postsWithParsedTags = data.posts.map((post: BlogPost) => {
+        const parsedPost = { ...post };
+        if (typeof parsedPost.tags === 'string') {
           try {
-            post.tags = JSON.parse(post.tags);
+            parsedPost.tags = JSON.parse(parsedPost.tags);
           } catch {
-            post.tags = [];
+            parsedPost.tags = [];
           }
         }
-        return post;
+        return parsedPost;
       });
       setBlogPosts(postsWithParsedTags);
     } catch (error) {

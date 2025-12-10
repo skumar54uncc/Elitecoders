@@ -34,8 +34,8 @@ export async function GET(
     }
 
     return NextResponse.json({ post }, { status: 200 });
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error fetching career post:", error);
@@ -92,7 +92,17 @@ export async function PUT(
     }
 
     // Convert empty strings to null for optional fields
-    const updateData: any = {};
+    const updateData: Partial<{
+      title: string;
+      slug: string;
+      excerpt: string | null;
+      content: string;
+      location: string | null;
+      employmentType: string;
+      department: string | null;
+      published: boolean;
+      updatedBy: string;
+    }> = {};
     if (data.title !== undefined) updateData.title = data.title;
     if (data.slug !== undefined) updateData.slug = data.slug;
     if (data.excerpt !== undefined) {
@@ -118,8 +128,8 @@ export async function PUT(
       { message: "Career post updated successfully", post },
       { status: 200 }
     );
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error updating career post:", error);
@@ -127,7 +137,7 @@ export async function PUT(
     return NextResponse.json(
       { 
         message: "An error occurred updating the career post",
-        error: process.env.NODE_ENV === "development" ? error.message : undefined
+        error: process.env.NODE_ENV === "development" && error instanceof Error ? error.message : undefined
       },
       { status: 500 }
     );
@@ -161,8 +171,8 @@ export async function DELETE(
       { message: "Career post deleted successfully" },
       { status: 200 }
     );
-  } catch (error: any) {
-    if (error.message === "Unauthorized") {
+  } catch (error: unknown) {
+    if (error instanceof Error && error.message === "Unauthorized") {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     console.error("Error deleting career post:", error);
