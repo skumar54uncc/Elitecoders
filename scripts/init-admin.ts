@@ -3,10 +3,27 @@ import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
+import * as readline from "readline";
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+function question(query: string): Promise<string> {
+  return new Promise((resolve) => {
+    rl.question(query, resolve);
+  });
+}
+
 async function main() {
-  const email = "admin@surgicalcoders.com";
-  const password = process.env.ADMIN_PASSWORD || "ChangeThisPassword123!";
-  const name = "Admin User";
+  console.log("=== Create Admin User ===\n");
+  
+  const email = await question("Enter admin email: ");
+  const password = await question("Enter admin password: ");
+  const name = await question("Enter admin name: ");
+  
+  rl.close();
 
   // Check if admin user already exists
   const existingUser = await prisma.user.findUnique({
