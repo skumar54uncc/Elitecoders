@@ -3,6 +3,10 @@ import Link from "next/link";
 import { getAllCareerPosts } from "@/lib/career-db";
 import { markdownToHtml } from "@/lib/career-db";
 
+// Force dynamic rendering to always fetch fresh data
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Careers",
   description: "Join the Elite Surgical Coders team. We are a specialized small team of certified professional coders.",
