@@ -51,7 +51,7 @@ function getEmailTemplate(content: string, title?: string) {
             <td style="background-color: #f8f8f8; padding: 20px 30px; text-align: center; border-radius: 0 0 8px 8px; border-top: 1px solid #e0e0e0;">
               <p style="color: #666666; margin: 0; font-size: 12px;">
                 Elite Surgical Coders and Medical Billing LLC<br>
-                80-02 Kew Gardens Road, Kew Gardens, NY 11415<br>
+                New York, NY 11415<br>
                 ${process.env.NEXT_PUBLIC_PHONE ? `Phone: ${process.env.NEXT_PUBLIC_PHONE}<br>` : ""}
                 ${process.env.NEXT_PUBLIC_EMAIL ? `Email: ${process.env.NEXT_PUBLIC_EMAIL}` : ""}
               </p>

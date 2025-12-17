@@ -5,7 +5,7 @@ import { Phone, Mail, MapPin } from "lucide-react";
 export default function Footer() {
   const phoneNumber = process.env.NEXT_PUBLIC_PHONE || "+1-555-123-4567";
   const email = process.env.NEXT_PUBLIC_EMAIL || "info@elitesurgicalcoders.com";
-  const address = process.env.NEXT_PUBLIC_ADDRESS || "80-02 Kew Gardens Road, Kew Gardens, NY 11415";
+  const address = process.env.NEXT_PUBLIC_ADDRESS || "New York, NY 11415";
 
   const currentYear = new Date().getFullYear();
 

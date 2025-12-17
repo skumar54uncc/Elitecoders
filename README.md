@@ -95,7 +95,7 @@ NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
 ```
 NEXT_PUBLIC_PHONE=+1-555-123-4567
 NEXT_PUBLIC_EMAIL=info@elitesurgicalcoders.com
-NEXT_PUBLIC_ADDRESS=80-02 Kew Gardens Road, Kew Gardens, NY 11415
+NEXT_PUBLIC_ADDRESS=New York, NY 11415
 ```
 
 ### Google Maps (Optional)
