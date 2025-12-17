@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyPassword, createSession } from "@/lib/auth";
-import { cookies } from "next/headers";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -46,16 +45,9 @@ export async function POST(request: NextRequest) {
 
     // Create session
     const sessionToken = await createSession(user.id);
-    const cookieStore = await cookies();
-    cookieStore.set("admin_session", sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: "/",
-    });
-
-    return NextResponse.json(
+    
+    // Create response with cookie
+    const response = NextResponse.json(
       {
         message: "Login successful",
         user: {
@@ -66,10 +58,21 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
+
+    // Set cookie on response
+    response.cookies.set("admin_session", sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
-      { message: "An error occurred during login" },
+      { message: "An error occurred during login", error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     );
   }
