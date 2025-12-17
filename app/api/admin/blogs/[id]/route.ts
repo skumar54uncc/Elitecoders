@@ -2,6 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth";
+import { createClient } from "@supabase/supabase-js";
+
+// Helper function to delete image from Supabase Storage
+async function deleteImageFromStorage(imageUrl: string | null) {
+  if (!imageUrl || !imageUrl.includes("supabase.co")) return;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) return;
+
+  try {
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Extract the file path from the URL
+    // URL format: https://xxx.supabase.co/storage/v1/object/public/images/blog/filename.jpg
+    const urlParts = imageUrl.split("/storage/v1/object/public/images/");
+    if (urlParts.length > 1) {
+      const filePath = urlParts[1];
+      await supabase.storage.from("images").remove([filePath]);
+      console.log("Deleted image from storage:", filePath);
+    }
+  } catch (error) {
+    console.error("Error deleting image from storage:", error);
+  }
+}
 
 const blogPostSchema = z.object({
   title: z.string().min(1, "Title is required").optional(),
@@ -162,6 +188,11 @@ export async function DELETE(
         { message: "Blog post not found" },
         { status: 404 }
       );
+    }
+
+    // Delete the image from Supabase Storage if it exists
+    if (post.image) {
+      await deleteImageFromStorage(post.image);
     }
 
     await prisma.blogPost.delete({

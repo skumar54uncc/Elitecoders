@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Save, X, Upload, Image as ImageIcon, Loader2, ArrowLeft } from "lucide-react";
+import { Save, X, Upload, Trash2, Loader2, ArrowLeft } from "lucide-react";
 
 interface BlogPost {
   id?: string;
@@ -92,6 +92,12 @@ export default function BlogEditor({ post }: BlogEditorProps) {
     } finally {
       setUploading(false);
     }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData((prev) => ({ ...prev, image: "" }));
+    setSuccess("Image removed. Save the post to confirm the change.");
+    setTimeout(() => setSuccess(""), 3000);
   };
 
   const handleAddTag = () => {
@@ -226,7 +232,7 @@ export default function BlogEditor({ post }: BlogEditorProps) {
           {/* Image Upload */}
           <div className="bg-white rounded-lg shadow p-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Featured Image
+              Featured Image (Optional)
             </label>
             <div className="space-y-4">
               {formData.image && (
@@ -237,12 +243,21 @@ export default function BlogEditor({ post }: BlogEditorProps) {
                     alt="Featured"
                     className="w-full h-full object-cover"
                   />
+                  {/* Remove button overlay */}
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                    title="Remove image"
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </button>
                 </div>
               )}
               <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark cursor-pointer transition-colors">
                   <Upload className="h-5 w-5" />
-                  {uploading ? "Uploading..." : "Upload Image"}
+                  {uploading ? "Uploading..." : formData.image ? "Change Image" : "Upload Image"}
                   <input
                     type="file"
                     accept="image/*"
@@ -251,10 +266,20 @@ export default function BlogEditor({ post }: BlogEditorProps) {
                     disabled={uploading}
                   />
                 </label>
+                {formData.image && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                  >
+                    <Trash2 className="h-5 w-5" />
+                    Remove Image
+                  </button>
+                )}
                 {uploading && <Loader2 className="h-5 w-5 animate-spin text-primary" />}
               </div>
               <p className="text-sm text-gray-500">
-                Recommended: 1200x630px. Max size: 5MB
+                Recommended: 1200x630px. Max size: 5MB. Image is optional.
               </p>
             </div>
           </div>
