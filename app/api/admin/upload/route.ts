@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/auth";
 import { createClient } from "@supabase/supabase-js";
 
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
 export async function POST(request: NextRequest) {
   try {
     await requireAuth();
+
+    // Initialize Supabase client inside handler
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
     // Check if Supabase is configured
     if (!supabaseUrl || !supabaseKey) {
@@ -18,6 +18,10 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    console.log("Creating Supabase client...");
+    console.log("URL:", supabaseUrl);
+    console.log("Key type:", supabaseKey.startsWith("eyJ") ? "JWT" : "Unknown");
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
