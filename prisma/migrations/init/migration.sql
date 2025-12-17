@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "Lead" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "organization" TEXT NOT NULL,
@@ -16,8 +16,8 @@ CREATE TABLE "User" (
     "email" TEXT NOT NULL UNIQUE,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
@@ -31,10 +31,10 @@ CREATE TABLE "BlogPost" (
     "category" TEXT NOT NULL DEFAULT 'Blog',
     "author" TEXT NOT NULL DEFAULT 'Elite Surgical Coders',
     "tags" TEXT NOT NULL DEFAULT '[]',
-    "date" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "published" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdBy" TEXT,
     "updatedBy" TEXT
 );
@@ -49,10 +49,10 @@ CREATE TABLE "CareerPost" (
     "location" TEXT,
     "employmentType" TEXT NOT NULL DEFAULT 'Full-time',
     "department" TEXT,
-    "date" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "published" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdBy" TEXT,
     "updatedBy" TEXT
 );
@@ -73,9 +73,9 @@ CREATE TABLE "JobApplication" (
     "status" TEXT NOT NULL DEFAULT 'pending',
     "notes" TEXT,
     "reviewedBy" TEXT,
-    "reviewedAt" DATETIME,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
+    "reviewedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     CONSTRAINT "JobApplication_careerPostId_fkey" FOREIGN KEY ("careerPostId") REFERENCES "CareerPost" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 

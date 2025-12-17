@@ -29,7 +29,7 @@ export default function AboutPage() {
                 Elite Surgical Coders and Medical Billing LLC is a NYC-based coding and billing company founded to support surgical practices facing complex New York laws and high denial rates.
               </p>
               <p>
-                Since 2019, we&apos;ve been helping hospitals, surgery centers, and specialty practices navigate the complexities of surgical coding, claims management, and legal documentation. With over 20 years of combined experience in coding and billing, our team understands the unique challenges facing New York providers.
+                Since 2019, we&apos;ve been helping surgery centers and specialty practices navigate the complexities of surgical coding, claims management, and legal documentation. With over 20 years of combined experience in coding and billing, our team understands the unique challenges facing New York providers.
               </p>
               <p>
                 We started because we saw too many practices struggling with denials, documentation gaps, and legal challenges that could be prevented with the right expertise. Our mission is to turn complex operative notes and consults into clean, compliant, defensible revenue.

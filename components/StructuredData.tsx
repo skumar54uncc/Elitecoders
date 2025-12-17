@@ -35,7 +35,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
         url: baseUrl,
         logo: `${baseUrl}/logo/Logo.svg`,
         description:
-          "NY-based surgical coding and medical billing company specializing in orthopedics, spine surgery, and pain management for hospitals, surgery centers, and specialty practices.",
+          "NY-based surgical coding and medical billing company specializing in orthopedics, spine surgery, and pain management for surgery centers and specialty practices.",
         address: {
           "@type": "PostalAddress",
           addressLocality: "New York",
@@ -85,7 +85,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           name: "New York",
         },
         description:
-          "Compliant surgical coding, claims management, and affidavits for New York hospitals, surgery centers, and specialty practices.",
+          "Compliant surgical coding, claims management, and affidavits for New York surgery centers and specialty practices.",
       };
       break;
 

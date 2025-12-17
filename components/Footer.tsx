@@ -27,7 +27,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="mb-4 text-sm text-gray-300">
-              Supporting New York hospitals, surgery centers, and specialty practices with compliant surgical coding, claims management, and legal affidavits.
+              Supporting New York surgery centers and specialty practices with compliant surgical coding, claims management, and legal affidavits.
             </p>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">

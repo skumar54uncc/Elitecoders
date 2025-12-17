@@ -11,10 +11,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://www.elitesurgicalcoders.com"),
   title: {
-    default: "Elite Surgical Coders | NY Surgical Coding & Billing for Hospitals, Orthopedics & Spine",
+    default: "Elite Surgical Coders | NY Surgical Coding & Billing for Orthopedics, Spine & Pain Management",
     template: "%s | Elite Surgical Coders",
   },
-  description: "Elite Surgical Coders and Medical Billing LLC provides compliant surgical coding, claims management, and affidavits for New York hospitals, surgery centers, and specialty practices. Expert CPT/ICD coding, No-Fault billing, Workers' Comp, and legal documentation support.",
+  description: "Elite Surgical Coders and Medical Billing LLC provides compliant surgical coding, claims management, and affidavits for New York surgery centers and specialty practices. Expert CPT/ICD coding, No-Fault billing, Workers' Comp, and legal documentation support.",
   keywords: [
     "surgical coding",
     "medical billing",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "no-fault",
     "CPT coding",
     "ICD-10 coding",
-    "NY hospitals",
+    "NY medical billing",
     "surgery centers",
     "medical coding services",
     "healthcare billing",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     url: "https://www.elitesurgicalcoders.com",
     siteName: "Elite Surgical Coders",
     title: "Elite Surgical Coders | NY Surgical Coding & Billing",
-    description: "Compliant surgical coding, claims management, and affidavits for New York hospitals, surgery centers, and specialty practices.",
+    description: "Compliant surgical coding, claims management, and affidavits for New York surgery centers and specialty practices.",
     images: [
       {
         url: "/logo/Logo.svg",

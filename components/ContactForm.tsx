@@ -14,7 +14,6 @@ const serviceOptions = [
 const roleOptions = [
   "Surgeon",
   "Practice Manager",
-  "Hospital Admin",
   "Attorney",
   "Other",
 ];

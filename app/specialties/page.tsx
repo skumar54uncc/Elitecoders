@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Who We Serve",
-  description: "Elite Surgical Coders serves New York hospitals, surgery centers, specialty practices, and legal teams with expert coding and billing support.",
+  description: "Elite Surgical Coders serves New York surgery centers, specialty practices, and legal teams with expert coding and billing support.",
 };
 
 export default function SpecialtiesPage() {
@@ -14,7 +14,7 @@ export default function SpecialtiesPage() {
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-bold text-white sm:text-5xl">Who We Serve</h1>
             <p className="mt-6 text-lg leading-8 text-gray-200 sm:text-xl">
-              We focus on New York practices, hospitals, surgery centers, and legal teams who need expert surgical coding, billing support, and legal documentation.
+              We focus on New York practices, surgery centers, and legal teams who need expert surgical coding, billing support, and legal documentation.
             </p>
           </div>
         </div>
@@ -24,14 +24,14 @@ export default function SpecialtiesPage() {
       <section className="bg-pattern bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="space-y-16">
-            {/* Hospitals & Surgery Centers */}
+            {/* Surgery Centers */}
             <div className="rounded-lg border-l-4 border-primary bg-white p-8 shadow-md">
               <h2 className="text-3xl font-semibold text-primary">
-                Hospitals & Surgery Centers
+                Ambulatory Surgery Centers
               </h2>
               <div className="mt-6 space-y-4 text-gray-600">
                 <p>
-                  We support hospitals and ambulatory surgery centers (ASCs) with high-volume surgical coding, complex operative notes, and coordination with internal billing teams. Our expertise in orthopedics, spine, and pain management procedures helps ensure accurate coding and maximum revenue capture.
+                  We support ambulatory surgery centers (ASCs) with high-volume surgical coding, complex operative notes, and coordination with internal billing teams. Our expertise in orthopedics, spine, and pain management procedures helps ensure accurate coding and maximum revenue capture.
                 </p>
                 <p>
                   <strong className="text-primary">Benefits:</strong>

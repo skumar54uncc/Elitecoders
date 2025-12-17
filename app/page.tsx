@@ -9,14 +9,14 @@ import { FileText, ClipboardCheck, TrendingUp, Scale, Users, Briefcase } from "l
 
 export const metadata: Metadata = {
   title: "NY Surgical Coding & Billing Experts with 20+ Years of Orthopedic, Spine & Pain Experience",
-  description: "Elite Surgical Coders and Medical Billing LLC supports New York hospitals, surgery centers, and specialty practices with compliant surgical coding, claims management, and legal affidavits. Expert CPT/ICD coding, No-Fault billing, Workers' Comp support, and legal documentation. Reduce denials and improve revenue capture.",
+  description: "Elite Surgical Coders and Medical Billing LLC supports New York surgery centers and specialty practices with compliant surgical coding, claims management, and legal affidavits. Expert CPT/ICD coding, No-Fault billing, Workers' Comp support, and legal documentation. Reduce denials and improve revenue capture.",
   keywords: [
     "surgical coding New York",
     "medical billing NY",
     "orthopedic coding",
     "spine surgery billing",
     "pain management coding",
-    "NY hospitals billing",
+    "NY medical billing",
     "surgery center coding",
     "CPT coding services",
     "ICD-10 coding",
@@ -38,7 +38,7 @@ export default function HomePage() {
     <>
       <HeroSection
         headline="NY Surgical Coding & Billing Experts with 20+ Years of Orthopedic, Spine & Pain Experience"
-        subheadline="Elite Surgical Coders and Medical Billing LLC supports New York hospitals, surgery centers, and specialty practices with compliant surgical coding, claims management, and legal affidavits — so your team can focus on patient care."
+        subheadline="Elite Surgical Coders and Medical Billing LLC supports New York surgery centers and specialty practices with compliant surgical coding, claims management, and legal affidavits — so your team can focus on patient care."
         primaryCTA={{ text: "Book a 15-Minute Call", href: "/contact" }}
         secondaryCTA={{ text: "Request a Free Coding & Claims Review", href: "/contact" }}
         showPhoneCTA={true}
