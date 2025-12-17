@@ -4,6 +4,10 @@ import Image from "next/image";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { getAllBlogPosts } from "@/lib/blog-db";
 
+// Force dynamic rendering to always fetch fresh data
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Resources & Blog | Surgical Coding & Billing Articles",
   description: "Expert articles and resources on surgical coding, medical billing, No-Fault insurance, Workers' Compensation, and compliance for New York healthcare practices. Stay updated with the latest trends in medical coding.",

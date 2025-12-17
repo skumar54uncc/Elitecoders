@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
-import { existsSync } from "fs";
 import { requireAuth } from "@/lib/auth";
+import { createClient } from "@supabase/supabase-js";
+
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
 export async function POST(request: NextRequest) {
   try {
     await requireAuth();
+
+    // Check if Supabase is configured
+    if (!supabaseUrl || !supabaseKey) {
+      console.error("Supabase not configured. URL:", !!supabaseUrl, "Key:", !!supabaseKey);
+      return NextResponse.json(
+        { message: "File storage not configured. Please set up Supabase Storage." },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     const formData = await request.formData();
     const file = formData.get("file") as File;
@@ -36,11 +49,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique filename (sanitize extension)
+    // Generate unique filename
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
     const originalExtension = file.name.split(".").pop()?.toLowerCase() || "";
-    // Sanitize extension - only allow alphanumeric characters
     const sanitizedExtension = originalExtension.replace(/[^a-z0-9]/g, "");
     if (!sanitizedExtension) {
       return NextResponse.json(
@@ -48,29 +60,36 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const filename = `${timestamp}-${randomString}.${sanitizedExtension}`;
+    const filename = `blog/${timestamp}-${randomString}.${sanitizedExtension}`;
 
-    // Save file to public/images/blog directory
-    const uploadDir = join(process.cwd(), "public", "images", "blog");
-    
-    // Create directory if it doesn't exist
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    const filePath = join(uploadDir, filename);
+    // Upload to Supabase Storage
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    await writeFile(filePath, buffer);
+    const { data, error } = await supabase.storage
+      .from("images")
+      .upload(filename, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
 
-    // Return the public URL
-    const publicUrl = `/images/blog/${filename}`;
+    if (error) {
+      console.error("Supabase upload error:", error);
+      return NextResponse.json(
+        { message: `Upload failed: ${error.message}` },
+        { status: 500 }
+      );
+    }
+
+    // Get public URL
+    const { data: urlData } = supabase.storage
+      .from("images")
+      .getPublicUrl(filename);
 
     return NextResponse.json(
       {
         message: "File uploaded successfully",
-        url: publicUrl,
+        url: urlData.publicUrl,
         filename: filename,
       },
       { status: 200 }
