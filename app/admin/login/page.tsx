@@ -33,9 +33,8 @@ export default function AdminLoginPage() {
         return;
       }
 
-      // Redirect to admin dashboard
-      router.push("/admin");
-      router.refresh();
+      // Redirect to admin dashboard using hard navigation to ensure cookie is read
+      window.location.href = "/admin";
     } catch (error) {
       setError("An error occurred. Please try again.");
       setLoading(false);
