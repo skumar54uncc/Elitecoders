@@ -2,33 +2,32 @@
 
 Google shows a small icon next to your site in results. It comes from your site’s **favicon**.
 
-## What the code does now
+## Next steps after RealFaviconGenerator
 
-- `app/layout.tsx` declares an icon at **`/logo/Logo.svg`** (same file as the header logo).
-- Ensure **`public/logo/Logo.svg`** exists in the repo and deploys to Vercel.
+**Do not paste the HTML into `index.html`** — this project uses Next.js. The `<head>` tags are already represented in **`app/layout.tsx`**.
 
-## Strongly recommended: add `favicon.ico`
+1. **Download** the favicon package from RealFaviconGenerator (**Step 1** on their site).
+2. **Unzip** and copy **every file** from the package into your project’s **`public/`** folder (same level as `logo/`), for example:
+   - `favicon.ico`
+   - `favicon.svg`
+   - `favicon-96x96.png`
+   - `apple-touch-icon.png`
+   - `site.webmanifest`
+   - `web-app-manifest-192x192.png`
+   - `web-app-manifest-512x512.png`  
+   *(Names may vary slightly — if something is missing, remove that line from `metadata.icons` in `app/layout.tsx` or rename files to match.)*
+3. **Commit** the new files and **push** → Vercel deploys.
+4. **Check** your live site: open `https://www.elitesurgicalcoders.com/favicon.ico` — it should download or display (not 404).
+5. On RealFaviconGenerator **Step 4**, enter your live URL and click **Check** (optional).
+6. **Google** can take **days** to update the icon in search; use **Search Console** → URL Inspection → **Request indexing** for the homepage after deploy.
 
-Google prefers a square **PNG or ICO**, often **48×48** or larger.
+### `apple-mobile-web-app-title`
 
-1. Open [RealFaviconGenerator](https://realfavicongenerator.net/) or similar.
-2. Upload your logo (square crop works best).
-3. Download the package and place in **`public/`**:
-   - **`favicon.ico`** (required for broad support)
-   - Optional: **`apple-touch-icon.png`** (180×180) for iOS bookmarks
-4. In **`app/layout.tsx`**, extend `metadata.icons` to include:
+That title is set in code as **`appleWebApp.title`** in `app/layout.tsx` (`"Elite Surgical Coders"`). Change it there if you want a shorter home-screen name.
 
-```ts
-icons: {
-  icon: [
-    { url: "/favicon.ico", sizes: "48x48" },
-    { url: "/logo/Logo.svg", type: "image/svg+xml" },
-  ],
-  apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-},
-```
+### If your zip uses different filenames
 
-5. Deploy, then wait **several days**; Google refreshes favicons on its own schedule. You can request re-indexing of the homepage in **Google Search Console**.
+Open `site.webmanifest` in the zip — it lists paths. Either keep those paths and filenames when copying into `public/`, or adjust `app/layout.tsx` `metadata.icons` to match what you actually have.
 
 ---
 

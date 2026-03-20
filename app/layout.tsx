@@ -79,10 +79,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  // Tab icon + Google search result icon (Google may take days to refresh after deploy).
-  // Add public/favicon.ico (48×48+) for best compatibility — see docs/SEO_AND_FAVICON.md
+  // PWA manifest + icons from RealFaviconGenerator — copy all files from the zip into /public
+  manifest: "/site.webmanifest",
+  appleWebApp: {
+    title: "Elite Surgical Coders",
+    capable: true,
+  },
   icons: {
-    icon: [{ url: "/logo/Logo.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
 };
 
