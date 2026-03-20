@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, Tag } from "lucide-react";
-import { getBlogPost, getAllBlogPosts, markdownToHtml } from "@/lib/blog-db";
+import { getBlogPost, getAllBlogPosts, markdownToSafeHtml } from "@/lib/blog-db";
 import StructuredData from "@/components/StructuredData";
 
 interface PageProps {
@@ -24,7 +24,12 @@ export async function generateStaticParams() {
   }
 }
 
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  if (!SLUG_PATTERN.test(params.slug)) {
+    return { title: "Post Not Found" };
+  }
   const post = await getBlogPost(params.slug);
 
   if (!post) {
@@ -49,13 +54,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
+  if (!SLUG_PATTERN.test(params.slug)) {
+    notFound();
+  }
   const post = await getBlogPost(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const htmlContent = markdownToHtml(post.content);
+  const htmlContent = markdownToSafeHtml(post.content);
 
   return (
     <>

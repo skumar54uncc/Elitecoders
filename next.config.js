@@ -1,6 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Blog & careers temporarily disabled for visitors — old links go home
+  async redirects() {
+    return [
+      { source: "/resources", destination: "/", permanent: false },
+      { source: "/resources/:path*", destination: "/", permanent: false },
+      { source: "/careers", destination: "/", permanent: false },
+      { source: "/careers/:path*", destination: "/", permanent: false },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-DNS-Prefetch-Control", value: "on" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

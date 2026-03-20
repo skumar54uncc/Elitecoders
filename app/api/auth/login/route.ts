@@ -2,15 +2,33 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyPassword, createSession } from "@/lib/auth";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
+  email: z.string().email("Invalid email address").max(254),
+  password: z.string().min(1, "Password is required").max(500),
 });
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const limited = checkRateLimit(`login:${ip}`, 20, 15 * 60 * 1000);
+  if (!limited.ok) {
+    return NextResponse.json(
+      { message: "Too many login attempts. Please try again later." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limited.retryAfter) },
+      }
+    );
+  }
+
   try {
-    const body = await request.json();
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ message: "Invalid request body" }, { status: 400 });
+    }
     const validationResult = loginSchema.safeParse(body);
 
     if (!validationResult.success) {
@@ -72,7 +90,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
-      { message: "An error occurred during login", error: error instanceof Error ? error.message : "Unknown error" },
+      { message: "An error occurred during login" },
       { status: 500 }
     );
   }

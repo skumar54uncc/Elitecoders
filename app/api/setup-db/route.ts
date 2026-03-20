@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isDevApiEnabled } from "@/lib/dev-endpoints";
 
 /**
- * Database setup endpoint
- * This will create tables if they don't exist
- * Visit: https://your-app.vercel.app/api/setup-db
- * 
- * WARNING: Only use this in development or as a one-time setup
- * For production, use proper Prisma migrations
+ * Database connectivity check (disabled in production unless ENABLE_DEV_API=true).
+ * Use Prisma migrations for schema changes.
  */
 export async function GET() {
+  if (!isDevApiEnabled()) {
+    return NextResponse.json({ message: "Not found" }, { status: 404 });
+  }
+
   try {
     // Test database connection
     await prisma.$connect();
@@ -48,8 +49,6 @@ export async function GET() {
         "4. Database server not accessible",
       ],
     }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }
 

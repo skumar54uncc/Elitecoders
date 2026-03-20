@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllCareerPosts } from "@/lib/career-db";
-import { markdownToHtml } from "@/lib/career-db";
+import { getAllCareerPosts, markdownToSafeHtml } from "@/lib/career-db";
 
 // Force dynamic rendering to always fetch fresh data
 export const dynamic = "force-dynamic";
@@ -92,7 +91,7 @@ export default async function CareersPage() {
                   
                   <div
                     className="prose prose-sm max-w-none text-gray-700 mb-6"
-                    dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
+                    dangerouslySetInnerHTML={{ __html: markdownToSafeHtml(post.content) }}
                   />
                   
                   <div className="flex items-center justify-between pt-4 border-t border-gray-200">

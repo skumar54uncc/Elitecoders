@@ -3,15 +3,19 @@ import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
 import { z } from "zod";
 import { escapeHtml, escapeHtmlWithBreaks } from "@/lib/utils";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
-// Validation schema
+// Validation schema (length limits reduce abuse and oversized payloads)
 const contactSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  organization: z.string().min(1, "Organization is required"),
-  role: z.string().min(1, "Role is required"),
-  servicesNeeded: z.array(z.string()).min(1, "At least one service must be selected"),
-  message: z.string().min(1, "Message is required"),
+  name: z.string().min(1, "Name is required").max(200),
+  email: z.string().email("Invalid email address").max(254),
+  organization: z.string().min(1, "Organization is required").max(300),
+  role: z.string().min(1, "Role is required").max(200),
+  servicesNeeded: z
+    .array(z.string().max(120))
+    .min(1, "At least one service must be selected")
+    .max(25),
+  message: z.string().min(1, "Message is required").max(10_000),
   phiAcknowledgment: z.boolean().refine((val) => val === true, {
     message: "PHI acknowledgment is required",
   }),
@@ -70,8 +74,25 @@ function getEmailTemplate(content: string, title?: string) {
 }
 
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const limited = checkRateLimit(`contact:${ip}`, 5, 15 * 60 * 1000);
+  if (!limited.ok) {
+    return NextResponse.json(
+      { message: "Too many submissions. Please try again later." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limited.retryAfter) },
+      }
+    );
+  }
+
   try {
-    const body = await request.json();
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ message: "Invalid request body" }, { status: 400 });
+    }
 
     // Validate input
     const validationResult = contactSchema.safeParse(body);

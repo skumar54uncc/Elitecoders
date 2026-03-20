@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Calendar, ArrowLeft, MapPin, Briefcase } from "lucide-react";
-import { getCareerPost, getAllCareerPosts, markdownToHtml } from "@/lib/career-db";
+import { getCareerPost, getAllCareerPosts, markdownToSafeHtml } from "@/lib/career-db";
 import JobApplicationForm from "@/components/JobApplicationForm";
 
 interface PageProps {
@@ -10,6 +10,8 @@ interface PageProps {
     slug: string;
   };
 }
+
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export async function generateStaticParams() {
   try {
@@ -24,6 +26,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  if (!SLUG_PATTERN.test(params.slug)) {
+    return { title: "Career Posting Not Found" };
+  }
   const post = await getCareerPost(params.slug);
 
   if (!post) {
@@ -39,13 +44,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function CareerPostPage({ params }: PageProps) {
+  if (!SLUG_PATTERN.test(params.slug)) {
+    notFound();
+  }
   const post = await getCareerPost(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const htmlContent = markdownToHtml(post.content);
+  const htmlContent = markdownToSafeHtml(post.content);
 
   return (
     <div className="bg-white">

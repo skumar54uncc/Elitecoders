@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Who We Serve",
-  description: "Elite Surgical Coders serves New York surgery centers, specialty practices, and legal teams with expert coding and billing support.",
+  title: "Orthopedic, Spine & Pain Management Doctors in New York | Who We Serve",
+  description: "Coding and billing for orthopedic doctors, spine doctors, and pain management doctors in New York. We serve NY surgery centers, specialty practices, and legal teams with expert surgical coding and billing support.",
+  keywords: [
+    "orthopedic doctors New York",
+    "pain management doctors New York",
+    "spine doctors New York",
+    "orthopedic doctors NY",
+    "spine doctors NY",
+    "pain management doctors NY",
+    "surgical coding New York",
+    "medical billing for doctors",
+  ],
 };
 
 export default function SpecialtiesPage() {
@@ -14,7 +24,7 @@ export default function SpecialtiesPage() {
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-bold text-white sm:text-5xl">Who We Serve</h1>
             <p className="mt-6 text-lg leading-8 text-gray-200 sm:text-xl">
-              We focus on New York practices, surgery centers, and legal teams who need expert surgical coding, billing support, and legal documentation.
+              Surgical coding and billing for <strong className="text-white">orthopedic doctors</strong>, <strong className="text-white">spine doctors</strong>, and <strong className="text-white">pain management doctors</strong> in <strong className="text-white">New York</strong>. We also support surgery centers, specialty practices, and legal teams.
             </p>
           </div>
         </div>
@@ -23,6 +33,14 @@ export default function SpecialtiesPage() {
       {/* Service Segments */}
       <section className="bg-pattern bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center mb-16">
+            <h2 className="text-2xl font-bold text-primary sm:text-3xl">
+              Coding & Billing for Orthopedic Doctors, Spine Doctors & Pain Management Doctors in New York
+            </h2>
+            <p className="mt-4 text-gray-600">
+              We specialize in supporting orthopedic doctors, spine doctors, and pain management doctors across New York with compliant surgical coding, claims management, and legal documentation. Our team understands the unique needs of NY specialty practices.
+            </p>
+          </div>
           <div className="space-y-16">
             {/* Surgery Centers */}
             <div className="rounded-lg border-l-4 border-primary bg-white p-8 shadow-md">
@@ -49,11 +67,11 @@ export default function SpecialtiesPage() {
             {/* Orthopedic, Spine & Pain Practices */}
             <div className="rounded-lg border-l-4 border-accent bg-white p-8 shadow-md">
               <h2 className="text-3xl font-semibold text-primary">
-                Orthopedic, Spine & Pain Practices
+                Orthopedic Doctors, Spine Doctors & Pain Management Doctors in New York
               </h2>
               <div className="mt-6 space-y-4 text-gray-600">
                 <p>
-                  Our deep understanding of complex procedural coding, frequent injections, multi-level surgeries, and documentation challenges makes us the ideal partner for specialty practices. We know the nuances of coding for orthopedics, spine surgery, and pain management procedures.
+                  We partner with orthopedic doctors, spine doctors, and pain management doctors throughout New York. Our deep understanding of complex procedural coding, frequent injections, multi-level surgeries, and documentation challenges makes us the ideal coding and billing partner for NY specialty practices.
                 </p>
                 <p>
                   <strong className="text-primary">Benefits:</strong>

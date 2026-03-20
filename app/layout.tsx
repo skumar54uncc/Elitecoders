@@ -14,8 +14,14 @@ export const metadata: Metadata = {
     default: "Elite Surgical Coders | NY Surgical Coding & Billing for Orthopedics, Spine & Pain Management",
     template: "%s | Elite Surgical Coders",
   },
-  description: "Elite Surgical Coders and Medical Billing LLC provides compliant surgical coding, claims management, and affidavits for New York surgery centers and specialty practices. Expert CPT/ICD coding, No-Fault billing, Workers' Comp, and legal documentation support.",
+  description: "Surgical coding and medical billing for orthopedic doctors, spine doctors, and pain management doctors in New York. Elite Surgical Coders supports NY surgery centers and specialty practices with compliant coding, claims management, and affidavits.",
   keywords: [
+    "orthopedic doctors New York",
+    "pain management doctors New York",
+    "spine doctors New York",
+    "orthopedic doctors NY",
+    "spine doctors NY",
+    "pain management doctors NY",
     "surgical coding",
     "medical billing",
     "New York",
@@ -43,8 +49,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://www.elitesurgicalcoders.com",
     siteName: "Elite Surgical Coders",
-    title: "Elite Surgical Coders | NY Surgical Coding & Billing",
-    description: "Compliant surgical coding, claims management, and affidavits for New York surgery centers and specialty practices.",
+    title: "Elite Surgical Coders | Coding & Billing for Orthopedic, Spine & Pain Doctors in NY",
+    description: "Surgical coding and medical billing for orthopedic doctors, spine doctors, and pain management doctors in New York. Compliant coding, claims management, and affidavits.",
     images: [
       {
         url: "/logo/Logo.svg",
@@ -56,8 +62,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elite Surgical Coders | NY Surgical Coding & Billing",
-    description: "Expert surgical coding and medical billing for New York healthcare practices.",
+    title: "Elite Surgical Coders | Orthopedic, Spine & Pain Doctors – New York",
+    description: "Surgical coding and billing for orthopedic doctors, spine doctors, and pain management doctors in New York.",
   },
   robots: {
     index: true,

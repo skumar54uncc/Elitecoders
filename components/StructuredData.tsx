@@ -35,7 +35,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
         url: baseUrl,
         logo: `${baseUrl}/logo/Logo.svg`,
         description:
-          "NY-based surgical coding and medical billing company specializing in orthopedics, spine surgery, and pain management for surgery centers and specialty practices.",
+          "Surgical coding and medical billing for orthopedic doctors, spine doctors, and pain management doctors in New York. NY-based company specializing in orthopedics, spine surgery, and pain management for surgery centers and specialty practices.",
         address: {
           "@type": "PostalAddress",
           addressLocality: "New York",
@@ -60,14 +60,6 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
         "@type": "WebSite",
         name: "Elite Surgical Coders",
         url: baseUrl,
-        potentialAction: {
-          "@type": "SearchAction",
-          target: {
-            "@type": "EntryPoint",
-            urlTemplate: `${baseUrl}/resources?search={search_term_string}`,
-          },
-          "query-input": "required name=search_term_string",
-        },
       };
       break;
 
@@ -85,7 +77,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           name: "New York",
         },
         description:
-          "Compliant surgical coding, claims management, and affidavits for New York surgery centers and specialty practices.",
+          "Surgical coding and medical billing for orthopedic doctors, spine doctors, and pain management doctors in New York. Compliant coding, claims management, and affidavits for NY surgery centers and specialty practices.",
       };
       break;
 
@@ -115,10 +107,11 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
       break;
   }
 
+  const json = JSON.stringify(structuredData).replace(/</g, "\\u003c");
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      dangerouslySetInnerHTML={{ __html: json }}
     />
   );
 }

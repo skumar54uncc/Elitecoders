@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "NY Surgical Coding & Billing Experts with 20+ Years of Orthopedic, Spine & Pain Experience",
   description: "Elite Surgical Coders and Medical Billing LLC supports New York surgery centers and specialty practices with compliant surgical coding, claims management, and legal affidavits. Expert CPT/ICD coding, No-Fault billing, Workers' Comp support, and legal documentation. Reduce denials and improve revenue capture.",
   keywords: [
+    "orthopedic doctors New York",
+    "pain management doctors New York",
+    "spine doctors New York",
+    "orthopedic doctors NY",
+    "spine doctors NY",
+    "pain management doctors NY",
     "surgical coding New York",
     "medical billing NY",
     "orthopedic coding",
@@ -27,8 +33,8 @@ export const metadata: Metadata = {
     "claim denials reduction",
   ],
   openGraph: {
-    title: "NY Surgical Coding & Billing Experts with 20+ Years of Orthopedic, Spine & Pain Experience",
-    description: "Expert surgical coding and medical billing for New York healthcare practices. Reduce denials and improve revenue.",
+    title: "Coding & Billing for Orthopedic, Spine & Pain Management Doctors in New York",
+    description: "Surgical coding and medical billing for orthopedic doctors, spine doctors, and pain management doctors in New York. Reduce denials and improve revenue.",
     type: "website",
   },
 };
@@ -144,21 +150,21 @@ export default function HomePage() {
               Specialties & Payers
             </h2>
             <p className="mt-4 text-lg text-gray-200">
-              Specialized expertise for New York practices
+              Coding and billing for orthopedic doctors, spine doctors, and pain management doctors in New York
             </p>
           </div>
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
             <div className="rounded-lg bg-white p-8 shadow-lg">
-              <h3 className="text-2xl font-semibold text-primary">Specialties</h3>
+              <h3 className="text-2xl font-semibold text-primary">Who We Support in New York</h3>
               <ul className="mt-4 space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
-                  <span className="text-accent font-bold">•</span> Orthopedics
+                  <span className="text-accent font-bold">•</span> Orthopedic doctors
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-accent font-bold">•</span> Spine surgery
+                  <span className="text-accent font-bold">•</span> Spine doctors
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-accent font-bold">•</span> Pain management
+                  <span className="text-accent font-bold">•</span> Pain management doctors
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-accent font-bold">•</span> Other surgical subspecialties

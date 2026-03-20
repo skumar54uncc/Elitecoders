@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us",
-  description: "Learn about Elite Surgical Coders and Medical Billing LLC, a NYC-based coding and billing company supporting surgical practices since 2019.",
+  title: "About Us | Coding & Billing for Orthopedic, Spine & Pain Doctors in NY",
+  description: "Elite Surgical Coders supports orthopedic doctors, spine doctors, and pain management doctors in New York with surgical coding and medical billing. NYC-based since 2019.",
+  keywords: [
+    "orthopedic doctors New York",
+    "pain management doctors New York",
+    "spine doctors New York",
+    "surgical coding New York",
+  ],
 };
 
 export default function AboutPage() {
@@ -26,10 +32,10 @@ export default function AboutPage() {
             <h2 className="text-3xl font-semibold text-primary">Our Story</h2>
             <div className="mt-6 space-y-4 text-gray-600">
               <p>
-                Elite Surgical Coders and Medical Billing LLC is a NYC-based coding and billing company founded to support surgical practices facing complex New York laws and high denial rates.
+                Elite Surgical Coders and Medical Billing LLC is a NYC-based coding and billing company founded to support surgical practices facing complex New York laws and high denial rates. We work with orthopedic doctors, spine doctors, and pain management doctors across New York.
               </p>
               <p>
-                Since 2019, we&apos;ve been helping surgery centers and specialty practices navigate the complexities of surgical coding, claims management, and legal documentation. With over 20 years of combined experience in coding and billing, our team understands the unique challenges facing New York providers.
+                Since 2019, we&apos;ve been helping surgery centers and specialty practices—including orthopedic doctors, spine doctors, and pain management doctors in NY—navigate surgical coding, claims management, and legal documentation. With over 20 years of combined experience, our team understands the unique challenges facing New York providers.
               </p>
               <p>
                 We started because we saw too many practices struggling with denials, documentation gaps, and legal challenges that could be prevented with the right expertise. Our mission is to turn complex operative notes and consults into clean, compliant, defensible revenue.

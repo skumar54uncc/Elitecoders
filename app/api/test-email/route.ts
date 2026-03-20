@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/email";
+import { isDevApiEnabled } from "@/lib/dev-endpoints";
 
 /**
- * Test endpoint to verify email configuration
- * Visit: http://localhost:3000/api/test-email
+ * Test endpoint to verify email configuration (disabled in production unless ENABLE_DEV_API=true).
  */
 export async function GET() {
+  if (!isDevApiEnabled()) {
+    return NextResponse.json({ message: "Not found" }, { status: 404 });
+  }
+
   try {
     // Check if email credentials are configured
     const smtpUser = process.env.SMTP_USER;

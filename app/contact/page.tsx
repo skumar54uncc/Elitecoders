@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ContactForm from "@/components/ContactForm";
-import GoogleMap from "@/components/GoogleMap";
 import { Phone, Mail, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -82,22 +81,6 @@ export default function ContactPage() {
                     <p className="mt-1 text-gray-600">{address}</p>
                   </div>
                 </div>
-              </div>
-
-              {/* Google Maps Embed */}
-              <div className="mt-8">
-                <h3 className="mb-4 font-semibold text-primary">Find Us</h3>
-                <GoogleMap address={address} height="384px" />
-                <p className="mt-4 text-sm text-gray-600">
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:text-accent-dark underline"
-                  >
-                    Open in Google Maps
-                  </a>
-                </p>
               </div>
             </div>
           </div>

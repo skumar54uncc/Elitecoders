@@ -3,8 +3,15 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Services",
-  description: "End-to-end surgical coding, claims management, affidavits, and practice support tailored to New York providers.",
+  title: "Services for Orthopedic, Spine & Pain Doctors in New York",
+  description: "Surgical coding, claims management, affidavits, and practice support for orthopedic doctors, spine doctors, and pain management doctors in New York. End-to-end support for NY providers.",
+  keywords: [
+    "orthopedic doctors New York",
+    "pain management doctors New York",
+    "spine doctors New York",
+    "surgical coding services",
+    "medical billing New York",
+  ],
 };
 
 export default function ServicesPage() {
@@ -16,7 +23,7 @@ export default function ServicesPage() {
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="text-4xl font-bold text-white sm:text-5xl">Services</h1>
             <p className="mt-6 text-lg leading-8 text-gray-200 sm:text-xl">
-              End-to-end surgical coding, claims management, affidavits, and practice support tailored to New York providers.
+              Surgical coding, claims management, affidavits, and practice support for <strong className="text-white">orthopedic doctors</strong>, <strong className="text-white">spine doctors</strong>, and <strong className="text-white">pain management doctors</strong> in <strong className="text-white">New York</strong>.
             </p>
           </div>
         </div>

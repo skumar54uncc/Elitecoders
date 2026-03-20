@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import { sanitizePublicContentHtml } from "./sanitize-html-content";
 
 export interface CareerPost {
   id?: string;
@@ -103,5 +104,10 @@ export function markdownToHtml(content: string): string {
   html = html.replace(/\n/g, "<br>");
 
   return html;
+}
+
+/** Markdown → HTML, then sanitize for safe rendering (mitigates stored XSS). */
+export function markdownToSafeHtml(content: string): string {
+  return sanitizePublicContentHtml(markdownToHtml(content));
 }
 

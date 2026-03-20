@@ -3,24 +3,49 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
 import { escapeHtml, escapeHtmlWithBreaks } from "@/lib/utils";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { isTrustedResumePublicUrl } from "@/lib/validate-resume-url";
 
 const applicationSchema = z.object({
-  careerPostId: z.string().optional(),
-  positionTitle: z.string().min(1, "Position title is required"),
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(1, "Phone number is required"),
-  resume: z.string().min(1, "Resume is required"),
-  coverLetter: z.string().optional(),
-  experience: z.string().optional(),
-  certifications: z.string().optional(),
+  careerPostId: z.string().max(40).optional(),
+  positionTitle: z.string().min(1, "Position title is required").max(300),
+  firstName: z.string().min(1, "First name is required").max(100),
+  lastName: z.string().min(1, "Last name is required").max(100),
+  email: z.string().email("Invalid email address").max(254),
+  phone: z.string().min(1, "Phone number is required").max(40),
+  resume: z
+    .string()
+    .min(1, "Resume is required")
+    .max(2048)
+    .refine(isTrustedResumePublicUrl, {
+      message: "Invalid resume URL",
+    }),
+  coverLetter: z.string().max(20_000).optional(),
+  experience: z.string().max(5000).optional(),
+  certifications: z.string().max(2000).optional(),
 });
 
 // POST - Submit job application
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const limited = checkRateLimit(`apply:${ip}`, 8, 60 * 60 * 1000);
+  if (!limited.ok) {
+    return NextResponse.json(
+      { message: "Too many applications from this network. Please try again later." },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limited.retryAfter) },
+      }
+    );
+  }
+
   try {
-    const body = await request.json();
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ message: "Invalid request body" }, { status: 400 });
+    }
 
     const validationResult = applicationSchema.safeParse(body);
     if (!validationResult.success) {
@@ -54,7 +79,8 @@ export async function POST(request: NextRequest) {
 
     // Send email notification to admin
     const internalNotificationEmail = process.env.INTERNAL_NOTIFICATION_EMAIL || "notifications@elitesurgicalcoders.com";
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || "https://www.elitesurgicalcoders.com";
 
     // Escape all user input to prevent XSS in emails
     const emailHtml = `
@@ -112,17 +138,8 @@ export async function POST(request: NextRequest) {
     );
   } catch (error: unknown) {
     console.error("Error submitting application:", error);
-    
-    // Return more detailed error in development
-    const errorMessage = process.env.NODE_ENV === "development" && error instanceof Error
-      ? error.message || "An error occurred submitting your application"
-      : "An error occurred submitting your application";
-    
     return NextResponse.json(
-      { 
-        message: errorMessage,
-        error: process.env.NODE_ENV === "development" && error instanceof Error ? error.stack : undefined
-      },
+      { message: "An error occurred submitting your application" },
       { status: 500 }
     );
   }

@@ -4,14 +4,15 @@ import { cookies } from "next/headers";
 import crypto from "crypto";
 
 const SESSION_COOKIE_NAME = "admin_session";
-const SESSION_SECRET = process.env.SESSION_SECRET;
 
-if (!SESSION_SECRET && process.env.NODE_ENV === "production") {
-  throw new Error("SESSION_SECRET environment variable is required in production");
+/** Lazy secret so `next build` can run without SESSION_SECRET (set on Vercel at runtime). */
+function getSessionSecret(): string {
+  const secret = process.env.SESSION_SECRET;
+  if (process.env.NODE_ENV === "production" && !secret) {
+    throw new Error("SESSION_SECRET environment variable is required in production");
+  }
+  return secret || "dev-secret-change-in-production";
 }
-
-// Use a default only in development
-const SECRET = SESSION_SECRET || "dev-secret-change-in-production";
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);
@@ -32,7 +33,7 @@ export async function createSession(userId: string): Promise<string> {
   
   // Create HMAC signature
   const signature = crypto
-    .createHmac("sha256", SECRET)
+    .createHmac("sha256", getSessionSecret())
     .update(payload)
     .digest("hex");
   
@@ -53,14 +54,32 @@ function verifySessionToken(sessionToken: string): string | null {
   // Reconstruct payload
   const payload = parts.join("-");
   
-  // Verify signature
+  // Verify signature (HMAC-SHA256 hex). Constant-time compare on decoded bytes — avoids
+  // throwing when lengths differ (timingSafeEqual on UTF-8 buffers was incorrect for hex).
   const expectedSignature = crypto
-    .createHmac("sha256", SECRET)
+    .createHmac("sha256", getSessionSecret())
     .update(payload)
     .digest("hex");
-  
-  // Use constant-time comparison to prevent timing attacks
-  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
+
+  if (
+    signature.length !== expectedSignature.length ||
+    signature.length % 2 !== 0 ||
+    !/^[0-9a-f]+$/i.test(signature) ||
+    !/^[0-9a-f]+$/i.test(expectedSignature)
+  ) {
+    return null;
+  }
+
+  const sigBuf = Buffer.from(signature, "hex");
+  const expBuf = Buffer.from(expectedSignature, "hex");
+  if (sigBuf.length !== expBuf.length) {
+    return null;
+  }
+  try {
+    if (!crypto.timingSafeEqual(sigBuf, expBuf)) {
+      return null;
+    }
+  } catch {
     return null;
   }
   
