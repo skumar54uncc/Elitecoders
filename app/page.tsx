@@ -158,13 +158,13 @@ export default function HomePage() {
               <h3 className="text-2xl font-semibold text-primary">Who We Support in New York</h3>
               <ul className="mt-4 space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
-                  <span className="text-accent font-bold">•</span> Orthopedic doctors
+                  <span className="text-accent font-bold">•</span> Orthopedic Surgeons
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-accent font-bold">•</span> Spine doctors
+                  <span className="text-accent font-bold">•</span> Spine Surgeons
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-accent font-bold">•</span> Pain management doctors
+                  <span className="text-accent font-bold">•</span> Pain Management Physicians
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-accent font-bold">•</span> Other surgical subspecialties
