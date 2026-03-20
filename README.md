@@ -1,6 +1,6 @@
 # Elite Surgical Coders - Marketing Website
 
-Production-ready marketing website for Elite Surgical Coders and Medical Billing LLC, built with Next.js, TypeScript, and Tailwind CSS.
+This project was built as a full-stack learning project to simulate a real-world business website, including deployment, SEO setup, and infrastructure configuration. It is a Production-ready marketing website for Elite Surgical Coders and Medical Billing LLC, built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Tech Stack
 
