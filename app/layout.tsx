@@ -79,6 +79,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  // Tab icon + Google search result icon (Google may take days to refresh after deploy).
+  // Add public/favicon.ico (48×48+) for best compatibility — see docs/SEO_AND_FAVICON.md
+  icons: {
+    icon: [{ url: "/logo/Logo.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({
